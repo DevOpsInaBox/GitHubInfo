@@ -15,8 +15,8 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 public class RestClient {
 	public static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss Z").create();
 
-	public static final String JENKINS_URL = "http://localhost:8080/jenkins/job/DevopsSecurityDemo/";
-	public static final String STASH_COMMIT_URL = "http://localhost:7990/rest/api/1.0/projects/UIAM/repos/DevopsSecurityDemo/commits/";
+	public static final String JENKINS_URL = "http://52.207.0.161:8081/job/DevOpsSecurityDemo/";
+	public static final String GITHUB_COMMIT_URL = "https://api.github.com/repos/devopsinabox/DevopsSecurityDemo/commits";
 	public static final String API_JSON = "/api/json";
 	public static final String CSV_FILE_PATH = "tools/changelog.csv";
 	public static final String ACCEPT_JSON = "application/json";
@@ -78,8 +78,8 @@ public class RestClient {
 
 	public static String getEmailIdByCommitId(String commitId) {
 		if (commitId != null) {
-			System.out.println("Fetching Results from " + STASH_COMMIT_URL + commitId);
-			ClientResponse response = apiCall(STASH_COMMIT_URL + commitId, ACCEPT_JSON, true);
+			System.out.println("Fetching Results from " + GITHUB_COMMIT_URL + commitId);
+			ClientResponse response = apiCall(GITHUB_COMMIT_URL + commitId, ACCEPT_JSON, true);
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
@@ -97,7 +97,7 @@ public class RestClient {
 	public static ClientResponse apiCall(String URI, String acceptType, boolean isStash) {
 		Client client = Client.create();
 		if(isStash){
-			client.addFilter(new HTTPBasicAuthFilter("micros","micros123"));
+			client.addFilter(new HTTPBasicAuthFilter("devopsinabox","Develop@2208"));
 		}
 		WebResource webResource = client.resource(URI);
 
